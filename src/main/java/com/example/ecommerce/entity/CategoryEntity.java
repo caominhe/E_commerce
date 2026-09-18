@@ -2,6 +2,7 @@ package com.example.ecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +18,7 @@ public class CategoryEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<ProductEntity> products;
 }
