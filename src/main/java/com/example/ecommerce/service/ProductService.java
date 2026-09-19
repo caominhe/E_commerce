@@ -6,8 +6,15 @@ import com.example.ecommerce.entity.CategoryEntity;
 import com.example.ecommerce.entity.ProductEntity;
 import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -101,5 +108,33 @@ public class ProductService {
                 product.getStock(),
                 product.getCategory().getId()
         );
+    }
+
+    public Page<ProductResponse> search(
+            String name,
+            Long categoryId,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            int page,
+            int size,
+            String sortBy,
+            String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<ProductEntity> products =
+                productRepository.searchProducts(
+                        name,
+                        categoryId,
+                        minPrice,
+                        maxPrice,
+                        pageable
+                );
+
+        return products.map(this::toResponse);
     }
 }
