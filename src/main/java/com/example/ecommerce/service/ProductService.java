@@ -50,14 +50,6 @@ public class ProductService {
         return toResponse(saved);
     }
 
-    public List<ProductResponse> getAll() {
-
-        return productRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
     public ProductResponse getById(Long id) {
 
         ProductEntity product = productRepository.findById(id)

@@ -22,3 +22,6 @@ Thumbs.db
 
 # Environment / secrets
 .env
+
+# Database source / local data
+database source.sql

@@ -26,3 +26,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
             Pageable pageable
     );
 }
+
+
