@@ -1,7 +1,7 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.UserRequest;
-import com.example.ecommerce.dto.UserResponse;
+import com.example.ecommerce.dto.request.UserRequest;
+import com.example.ecommerce.dto.response.UserResponse;
 import com.example.ecommerce.entity.UserEntity;
 import com.example.ecommerce.repository.UserRepository;
 import org.springframework.stereotype.Service;

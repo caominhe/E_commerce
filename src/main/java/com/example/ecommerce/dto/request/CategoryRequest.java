@@ -1,5 +1,6 @@
-package com.example.ecommerce.dto;
+package com.example.ecommerce.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -7,6 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryRequest {
-
+    @NotBlank
     private String name;
 }

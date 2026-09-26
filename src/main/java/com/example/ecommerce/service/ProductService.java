@@ -1,7 +1,7 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.ProductRequest;
-import com.example.ecommerce.dto.ProductResponse;
+import com.example.ecommerce.dto.request.ProductRequest;
+import com.example.ecommerce.dto.response.ProductResponse;
 import com.example.ecommerce.entity.CategoryEntity;
 import com.example.ecommerce.entity.ProductEntity;
 import com.example.ecommerce.repository.CategoryRepository;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class ProductService {

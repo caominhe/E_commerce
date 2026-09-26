@@ -1,8 +1,9 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.dto.CategoryRequest;
-import com.example.ecommerce.dto.CategoryResponse;
+import com.example.ecommerce.dto.request.CategoryRequest;
+import com.example.ecommerce.dto.response.CategoryResponse;
 import com.example.ecommerce.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class CategoryController {
 
     @PostMapping
     public CategoryResponse create(
+            @Valid
             @RequestBody CategoryRequest request) {
 
         return categoryService.create(request);
@@ -38,6 +40,7 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public CategoryResponse update(
+            @Valid
             @PathVariable Long id,
             @RequestBody CategoryRequest request) {
 

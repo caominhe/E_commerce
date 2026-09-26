@@ -1,7 +1,7 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.CategoryRequest;
-import com.example.ecommerce.dto.CategoryResponse;
+import com.example.ecommerce.dto.request.CategoryRequest;
+import com.example.ecommerce.dto.response.CategoryResponse;
 import com.example.ecommerce.entity.CategoryEntity;
 import com.example.ecommerce.repository.CategoryRepository;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,11 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.dto.ProductRequest;
-import com.example.ecommerce.dto.ProductResponse;
+import com.example.ecommerce.dto.request.ProductRequest;
+import com.example.ecommerce.dto.response.ProductResponse;
 import com.example.ecommerce.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,7 +23,7 @@ public class ProductController {
 
     @PostMapping
     public ProductResponse create(
-            @RequestBody ProductRequest request) {
+            @Valid @RequestBody ProductRequest request) {
 
         return productService.create(request);
     }
@@ -62,6 +62,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ProductResponse update(
+            @Valid
             @PathVariable Long id,
             @RequestBody ProductRequest request) {
 

@@ -1,10 +1,10 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.dto.UserRequest;
-import com.example.ecommerce.dto.UserResponse;
+import com.example.ecommerce.dto.request.UserRequest;
+import com.example.ecommerce.dto.response.UserResponse;
 import com.example.ecommerce.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse createUser(@RequestBody UserRequest request) {
+    public UserResponse createUser(@Valid @RequestBody UserRequest request) {
         return userService.createUser(request);
     }
 
@@ -34,6 +34,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public UserResponse updateUser(
+            @Valid
             @PathVariable Long id,
             @RequestBody UserRequest request) {
 

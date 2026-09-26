@@ -1,17 +1,15 @@
-package com.example.ecommerce.dto;
+package com.example.ecommerce.dto.response;
 
 import lombok.*;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemResponse {
+public class CartItemResponse {
 
+    private Long id;
     private Long productId;
     private String productName;
     private Integer quantity;
-    private BigDecimal price;
 }

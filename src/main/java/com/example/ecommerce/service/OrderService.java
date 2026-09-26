@@ -1,8 +1,8 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.OrderItemResponse;
-import com.example.ecommerce.dto.OrderRequest;
-import com.example.ecommerce.dto.OrderResponse;
+import com.example.ecommerce.dto.response.OrderItemResponse;
+import com.example.ecommerce.dto.request.OrderRequest;
+import com.example.ecommerce.dto.response.OrderResponse;
 import com.example.ecommerce.entity.*;
 import com.example.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,12 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.dto.OrderRequest;
-import com.example.ecommerce.dto.OrderResponse;
+import com.example.ecommerce.dto.request.OrderRequest;
+import com.example.ecommerce.dto.response.OrderResponse;
 import com.example.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class OrderController {
 
     @PostMapping
     public OrderResponse createOrder(
+            @Valid
             @RequestBody OrderRequest request
     ) {
         return orderService.createOrder(request);

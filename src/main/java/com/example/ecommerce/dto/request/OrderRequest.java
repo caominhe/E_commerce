@@ -1,5 +1,6 @@
-package com.example.ecommerce.dto;
+package com.example.ecommerce.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -8,5 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class OrderRequest {
 
+    @NotNull
     private Long userId;
 }

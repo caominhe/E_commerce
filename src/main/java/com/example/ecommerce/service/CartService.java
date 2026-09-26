@@ -1,8 +1,8 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.dto.CartItemRequest;
-import com.example.ecommerce.dto.CartItemResponse;
-import com.example.ecommerce.dto.UpdateCartItemRequest;
+import com.example.ecommerce.dto.request.CartItemRequest;
+import com.example.ecommerce.dto.response.CartItemResponse;
+import com.example.ecommerce.dto.request.UpdateCartItemRequest;
 import com.example.ecommerce.entity.CartEntity;
 import com.example.ecommerce.entity.CartItemEntity;
 import com.example.ecommerce.entity.ProductEntity;
