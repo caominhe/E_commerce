@@ -7,14 +7,14 @@ import com.example.ecommerce.entity.CartEntity;
 import com.example.ecommerce.entity.CartItemEntity;
 import com.example.ecommerce.entity.ProductEntity;
 import com.example.ecommerce.entity.UserEntity;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CartItemRepository;
 import com.example.ecommerce.repository.CartRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -29,18 +29,10 @@ public class CartService {
 
     public CartItemResponse addItem(CartItemRequest request) {
 
-        // 1. Kiểm tra quantity
-        if (request.getQuantity() <= 0) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Quantity must be greater than 0"
-            );
-        }
-
         // 2. Tìm User
         UserEntity user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "USER_NOT_FOUND",
                         "User not found"
                 ));
 
@@ -54,8 +46,8 @@ public class CartService {
 
         // 4. Tìm Product
         ProductEntity product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "PRODUCT_NOT_FOUND",
                         "Product not found"
                 ));
 
@@ -102,15 +94,15 @@ public class CartService {
 
         // 1. Tìm User
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "USER_NOT_FOUND",
                         "User not found"
                 ));
 
         // 2. Tìm Cart
         CartEntity cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "CART_NOT_FOUND",
                         "Cart not found"
                 ));
 
@@ -129,23 +121,13 @@ public class CartService {
             UpdateCartItemRequest request
     ) {
 
-        // 1. Validate quantity
-        if (request.getQuantity() == null ||
-                request.getQuantity() <= 0) {
-
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Quantity must be greater than 0"
-            );
-        }
-
         // 2. Tìm CartItem thuộc User
         CartItemEntity cartItem =
                 cartItemRepository.findByIdAndCartUserId(
                         id,
                         request.getUserId()
-                ).orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                ).orElseThrow(() -> new ResourceNotFoundException(
+                        "CART_ITEM_NOT_FOUND",
                         "Cart item not found"
                 ));
 
@@ -167,8 +149,8 @@ public class CartService {
                 cartItemRepository.findByIdAndCartUserId(
                         id,
                         userId
-                ).orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                ).orElseThrow(() -> new ResourceNotFoundException(
+                        "CART_ITEM_NOT_FOUND",
                         "Cart item not found"
                 ));
 

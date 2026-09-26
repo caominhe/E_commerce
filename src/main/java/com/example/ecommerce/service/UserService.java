@@ -5,6 +5,7 @@ import com.example.ecommerce.dto.response.UserResponse;
 import com.example.ecommerce.entity.UserEntity;
 import com.example.ecommerce.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -49,7 +50,10 @@ public class UserService {
     public UserResponse getUserById(Long id) {
 
         UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "USER_NOT_FOUND",
+                        "User not found"
+                ));
 
         return new UserResponse(
                 user.getId(),
@@ -61,7 +65,10 @@ public class UserService {
     public UserResponse updateUser(Long id, UserRequest request) {
 
         UserEntity user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "USER_NOT_FOUND",
+                        "User not found"
+                ));
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
@@ -79,7 +86,10 @@ public class UserService {
     public void deleteUser(Long id) {
 
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException(
+                    "USER_NOT_FOUND",
+                    "User not found"
+            );
         }
 
         userRepository.deleteById(id);

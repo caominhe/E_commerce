@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -34,8 +35,10 @@ public class ProductService {
 
         CategoryEntity category = categoryRepository.findById(
                 request.getCategoryId()
-        ).orElseThrow(() ->
-                new RuntimeException("Category not found"));
+        ).orElseThrow(() -> new ResourceNotFoundException(
+                "CATEGORY_NOT_FOUND",
+                "Category not found"
+        ));
 
         ProductEntity product = new ProductEntity();
 
@@ -52,8 +55,10 @@ public class ProductService {
     public ProductResponse getById(Long id) {
 
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "PRODUCT_NOT_FOUND",
+                        "Product not found"
+                ));
 
         return toResponse(product);
     }
@@ -63,13 +68,17 @@ public class ProductService {
             ProductRequest request) {
 
         ProductEntity product = productRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "PRODUCT_NOT_FOUND",
+                        "Product not found"
+                ));
 
         CategoryEntity category = categoryRepository.findById(
                 request.getCategoryId()
-        ).orElseThrow(() ->
-                new RuntimeException("Category not found"));
+        ).orElseThrow(() -> new ResourceNotFoundException(
+                "CATEGORY_NOT_FOUND",
+                "Category not found"
+        ));
 
         product.setName(request.getName());
         product.setPrice(request.getPrice());
@@ -84,7 +93,10 @@ public class ProductService {
     public void delete(Long id) {
 
         if (!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found");
+            throw new ResourceNotFoundException(
+                    "PRODUCT_NOT_FOUND",
+                    "Product not found"
+            );
         }
 
         productRepository.deleteById(id);

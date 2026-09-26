@@ -3,6 +3,7 @@ package com.example.ecommerce.service;
 import com.example.ecommerce.dto.request.CategoryRequest;
 import com.example.ecommerce.dto.response.CategoryResponse;
 import com.example.ecommerce.entity.CategoryEntity;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,10 @@ public class CategoryService {
     public CategoryResponse getById(Long id) {
 
         CategoryEntity category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "CATEGORY_NOT_FOUND",
+                        "Category not found"
+                ));
 
         return new CategoryResponse(
                 category.getId(),
@@ -55,7 +59,10 @@ public class CategoryService {
     public CategoryResponse update(Long id, CategoryRequest request) {
 
         CategoryEntity category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "CATEGORY_NOT_FOUND",
+                        "Category not found"
+                ));
 
         category.setName(request.getName());
 
@@ -70,7 +77,10 @@ public class CategoryService {
     public void delete(Long id) {
 
         if (!categoryRepository.existsById(id)) {
-            throw new RuntimeException("Category not found");
+            throw new  ResourceNotFoundException(
+                    "CATEGORY_NOT_FOUND",
+                    "Category not found"
+            );
         }
 
         categoryRepository.deleteById(id);

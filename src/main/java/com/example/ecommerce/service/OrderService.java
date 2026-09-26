@@ -4,11 +4,11 @@ import com.example.ecommerce.dto.response.OrderItemResponse;
 import com.example.ecommerce.dto.request.OrderRequest;
 import com.example.ecommerce.dto.response.OrderResponse;
 import com.example.ecommerce.entity.*;
+import com.example.ecommerce.exception.BusinessException;
+import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -31,15 +31,15 @@ public class OrderService {
 
         // 1. Tìm User
         UserEntity user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "USER_NOT_FOUND",
                         "User not found"
                 ));
 
         // 2. Tìm Cart
         CartEntity cart = cartRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "CART_NOT_FOUND",
                         "Cart not found"
                 ));
 
@@ -47,12 +47,13 @@ public class OrderService {
         List<CartItemEntity> cartItems = cartItemRepository
                 .findAll()
                 .stream()
-                .filter(item -> item.getCart().getId().equals(cart.getId()))
+                .filter(item ->
+                        item.getCart().getId().equals(cart.getId()))
                 .toList();
 
         if (cartItems.isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
+            throw new BusinessException(
+                    "CART_EMPTY",
                     "Cart is empty"
             );
         }
@@ -63,15 +64,15 @@ public class OrderService {
             ProductEntity product = cartItem.getProduct();
 
             if (product == null) {
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                throw new ResourceNotFoundException(
+                        "PRODUCT_NOT_FOUND",
                         "Product not found"
                 );
             }
 
             if (product.getStock() < cartItem.getQuantity()) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
+                throw new BusinessException(
+                        "INSUFFICIENT_STOCK",
                         "Not enough stock for product: "
                                 + product.getName()
                 );
@@ -86,7 +87,9 @@ public class OrderService {
             BigDecimal itemTotal = cartItem.getProduct()
                     .getPrice()
                     .multiply(
-                            BigDecimal.valueOf(cartItem.getQuantity())
+                            BigDecimal.valueOf(
+                                    cartItem.getQuantity()
+                            )
                     );
 
             totalAmount = totalAmount.add(itemTotal);
@@ -98,8 +101,8 @@ public class OrderService {
         order.setTotalAmount(totalAmount);
         order.setStatus("PENDING");
 
-        OrderEntity savedOrder = orderRepository.save(order);
-
+        OrderEntity savedOrder =
+                orderRepository.save(order);
 
         // 7. Create OrderItem
         List<OrderItemEntity> orderItems = new ArrayList<>();
@@ -108,7 +111,8 @@ public class OrderService {
 
             ProductEntity product = cartItem.getProduct();
 
-            OrderItemEntity orderItem = new OrderItemEntity();
+            OrderItemEntity orderItem =
+                    new OrderItemEntity();
 
             orderItem.setOrder(savedOrder);
             orderItem.setProduct(product);
@@ -126,7 +130,8 @@ public class OrderService {
             ProductEntity product = cartItem.getProduct();
 
             product.setStock(
-                    product.getStock() - cartItem.getQuantity()
+                    product.getStock()
+                            - cartItem.getQuantity()
             );
 
             productRepository.save(product);
@@ -185,8 +190,8 @@ public class OrderService {
     public OrderResponse getOrderById(Long id) {
 
         OrderEntity order = orderRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "ORDER_NOT_FOUND",
                         "Order not found"
                 ));
 
