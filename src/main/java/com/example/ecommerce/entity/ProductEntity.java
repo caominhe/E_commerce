@@ -30,9 +30,4 @@ public class ProductEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
-    public ProductEntity(Long id, String name, BigDecimal price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-    }
 }
