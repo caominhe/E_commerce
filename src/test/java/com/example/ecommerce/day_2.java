@@ -1,5 +1,4 @@
-
-        package com.example.ecommerce;
+package com.example.ecommerce;
 
 
 // Import @Test.

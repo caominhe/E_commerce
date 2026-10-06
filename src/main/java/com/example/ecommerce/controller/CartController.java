@@ -35,9 +35,9 @@ public class CartController {
 
     @PutMapping("/items/{id}")
     public CartItemResponse updateItem(
-            @Valid
+
             @PathVariable Long id,
-            @RequestBody UpdateCartItemRequest request
+            @Valid @RequestBody UpdateCartItemRequest request
     ) {
         return cartService.updateItem(id, request);
     }
