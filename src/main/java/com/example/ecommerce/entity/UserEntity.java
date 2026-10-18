@@ -30,6 +30,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String role = "USER";
+
     public UserEntity(String name, String email, String password) {
         this.name = name;
         this.email = email;

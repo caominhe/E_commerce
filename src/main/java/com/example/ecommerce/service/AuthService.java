@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.example.ecommerce.dto.response.LoginResponse;
+import com.example.ecommerce.service.JwtService;
 
 
 @Service
@@ -19,16 +21,19 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
 
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
+            JwtService jwtService,
             AuthenticationManager authenticationManager) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
 
@@ -60,14 +65,17 @@ public class AuthService {
     }
 
     // Thêm vào bên trong AuthService
-    public String login(LoginRequest request) {
-        authenticationManager.authenticate(
+    public LoginResponse login(LoginRequest request) {
+        var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
 
-        return "Login successful";
+        String token = jwtService.generateToken(authentication.getName());
+
+        return new LoginResponse(token, "Bearer");
     }
+
 }
